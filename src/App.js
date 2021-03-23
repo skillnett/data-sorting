@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { DataManager } from './managers/DataManager';
+import { Grid } from '@material-ui/core';
+import { rootStyles } from './styles/rootStyles';
+import { ProjectCard } from './components/ProjectCard';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const dataManager = new DataManager();
+    const data = dataManager.getSortableProjectsData();
+
+    const [projectsData, setProjectsData] = useState(data);
+
+    const classes = rootStyles();
+
+    return (
+        <div className={classes.root}>
+            {projectsData?.map(item => (
+                <Grid container spacing={3} key={item.id}>
+                    <ProjectCard
+                        {...{
+                            setProjectsData,
+                            projectsData,
+                            classes,
+                            item,
+                        }}
+                    />
+                </Grid>
+            ))}
+        </div>
+    );
+};
 
 export default App;
